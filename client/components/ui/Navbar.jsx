@@ -78,9 +78,9 @@ export default function Navbar() {
                 <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100 text-sm">
                   Profile
                 </Link>
-                <Link href="/settings" className="block px-4 py-2 hover:bg-gray-100 text-sm">
+                {/* <Link href="/settings" className="block px-4 py-2 hover:bg-gray-100 text-sm">
                   Settings
-                </Link>
+                </Link> */}
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600 text-sm"

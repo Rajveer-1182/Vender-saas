@@ -15,7 +15,7 @@ export default function Sidebar() {
     { label: "Calendar", icon: "📆", href: "/calendar" },
     { label: "Analytics", icon: "📈", href: "/analytics" },
     { label: "Staff", icon: "👥", href: "/staff" },
-    { label: "Settings", icon: "⚙️", href: "/settings" }
+    // { label: "Settings", icon: "⚙️", href: "/settings" }
   ];
 
   return (
