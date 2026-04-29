@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:3000", // your frontend
+  origin: "http://localhost:3000" || "https://vender-saas.onrender.com", // your frontend
   credentials: true
 }));
 app.use(express.json());
