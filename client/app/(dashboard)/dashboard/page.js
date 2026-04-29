@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBookings } from '@/hooks/useBookings';
 import { useInventory } from '@/hooks/useInventory';
+import { authAPI } from '@/lib/api';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -11,20 +12,34 @@ export default function DashboardPage() {
   const { bookings, analytics, loading: bookingsLoading } = useBookings();
   const { inventory, loading: inventoryLoading } = useInventory();
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   const userData = localStorage.getItem('user');
+    
+  //   if (!token || !userData) {
+  //     router.push('auth/login');
+  //     return;
+  //   }
+    
+  //   try {
+  //     setUser(JSON.parse(userData));
+  //   } catch (e) {
+  //     router.push('auth/login');
+  //   }
+  // }, [router]);
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    
-    if (!token || !userData) {
-      router.push('/login');
-      return;
-    }
-    
-    try {
-      setUser(JSON.parse(userData));
-    } catch (e) {
-      router.push('/login');
-    }
+    const checkUser = async () => {
+      try {
+        const res = await authAPI.getProfile(); // 🔥 cookie auto sent
+        setUser(res); // backend should return user
+      } catch (error) {
+        console.error('Auth failed, redirecting to login:', error);
+        router.push('/auth/login');
+      }
+    };
+
+    checkUser();
   }, [router]);
 
   if (!user) {

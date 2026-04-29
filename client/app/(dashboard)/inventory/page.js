@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useInventory } from '@/hooks/useInventory';
 import InventoryCard from '@/components/inventory/InventoryCard';
+import { authAPI } from "@/lib/api";
 
 export default function InventoryPage() {
   const router = useRouter();
@@ -11,21 +12,36 @@ export default function InventoryPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { inventory, loading, deleteItem } = useInventory();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   const userData = localStorage.getItem('user');
     
-    if (!token || !userData) {
-      router.push('/login');
-      return;
-    }
+  //   if (!token || !userData) {
+  //     router.push('/login');
+  //     return;
+  //   }
     
+  //   try {
+  //     setUser(JSON.parse(userData));
+  //   } catch (e) {
+  //     router.push('/login');
+  //   }
+  // }, [router]);
+
+
+
+useEffect(() => {
+  const checkUser = async () => {
     try {
-      setUser(JSON.parse(userData));
-    } catch (e) {
-      router.push('/login');
+      const userData = await authAPI.getProfile(); // 🔥 cookie auto sent
+      setUser(userData);
+    } catch (error) {
+      router.push("/auth/login");
     }
-  }, [router]);
+  };
+
+  checkUser();
+}, [router]);
 
   console.log(inventory)
 

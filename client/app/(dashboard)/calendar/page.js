@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBookings } from '@/hooks/useBookings';
+import { authAPI } from "@/lib/api";
 
 export default function CalendarPage() {
   const router = useRouter();
@@ -10,21 +11,37 @@ export default function CalendarPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const { bookings, loading } = useBookings();
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   const userData = localStorage.getItem('user');
+    
+  //   if (!token || !userData) {
+  //     router.push('/login');
+  //     return;
+  //   }
+    
+  //   try {
+  //     setUser(JSON.parse(userData));
+  //   } catch (e) {
+  //     router.push('/login');
+  //   }
+  // }, [router]);
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    
-    if (!token || !userData) {
-      router.push('/login');
-      return;
-    }
-    
+  const checkUser = async () => {
     try {
-      setUser(JSON.parse(userData));
-    } catch (e) {
-      router.push('/login');
+      const userData = await authAPI.getProfile(); // 🔥 cookie auto sent
+      setUser(userData);
+    } catch (error) {
+      router.push("/auth/login");
     }
-  }, [router]);
+  };
+
+  checkUser();
+}, [router]);
+
+
+    
 
   if (!user) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useBookings } from "@/hooks/useBookings";
 import { useInventory } from "@/hooks/useInventory";
+import { authAPI } from "@/lib/api";
 
 const Profile = () => {
   const router = useRouter();
@@ -12,21 +13,35 @@ const Profile = () => {
   const { bookings } = useBookings();
   const { inventory } = useInventory();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   const userData = localStorage.getItem("user");
 
-    if (!token || !userData) {
-      router.push("/login");
-      return;
-    }
+  //   if (!token || !userData) {
+  //     router.push("/login");
+  //     return;
+  //   }
 
+  //   try {
+  //     setUser(JSON.parse(userData));
+  //   } catch (e) {
+  //     router.push("/login");
+  //   }
+  // }, [router]);
+
+
+useEffect(() => {
+  const checkUser = async () => {
     try {
-      setUser(JSON.parse(userData));
-    } catch (e) {
-      router.push("/login");
+      const userData = await authAPI.getProfile(); // 🔥 cookie auto sent
+      setUser(userData);
+    } catch (error) {
+      router.push("/auth/login");
     }
-  }, [router]);
+  };
+
+  checkUser();
+}, [router]);
 
   if (!user) {
     return (

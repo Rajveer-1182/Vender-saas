@@ -165,12 +165,9 @@ export const useBookings = () => {
   };
 
   useEffect(() => {
-    // Only fetch if we have a token
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    if (token) {
-      fetchBookings();
-      fetchAnalytics();
-    }
+    // Token is automatically sent via cookies
+    fetchBookings();
+    fetchAnalytics();
   }, []);
 
   return {

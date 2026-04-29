@@ -104,11 +104,8 @@ export const useInventory = () => {
   };
 
   useEffect(() => {
-    // Only fetch if we have a token
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    if (token) {
-      fetchInventory();
-    }
+    // Token is automatically sent via cookies
+    fetchInventory();
   }, []);
 
   return {

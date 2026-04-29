@@ -4,31 +4,44 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/a
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true, // ✅ required for cookies
   headers: {
     "Content-Type": "application/json"
   }
 });
 
-// Add token to requests
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 // ============ AUTH ENDPOINTS ============
+// export const authAPI = {
+//   register: async (data) => {
+//     const res = await apiClient.post("/auth/register", data);
+//     return res.data;
+//   },
+
+//   login: async (data) => {
+//     const res = await apiClient.post("/auth/login", data);
+//     return res.data;
+//   },
+
+//   getProfile: async () => {
+//     const res = await apiClient.get("/auth/profile");
+//     return res.data;
+//   },
+
+//   updateProfile: async (data) => {
+//     const res = await apiClient.put("/auth/update-profile", data);
+//     return res.data;
+//   }
+// };
+
 export const authAPI = {
   register: (data) => apiClient.post("/auth/register", data),
+
   login: (data) => apiClient.post("/auth/login", data),
+
   getProfile: () => apiClient.get("/auth/profile"),
+
   updateProfile: (data) => apiClient.put("/auth/update-profile", data)
 };
-
 // ============ INVENTORY ENDPOINTS ============
 export const inventoryAPI = {
   addInventory: (data) => apiClient.post("/inventory/add", data),
@@ -63,8 +76,9 @@ apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+      // Token expired or invalid, redirect to login
+      // Cookie will be cleared by server
+      window.location.href = "/auth/login";
     }
     return Promise.reject(error.response?.data || error);
   }

@@ -12,20 +12,13 @@ export default function Navbar() {
   const router = useRouter();
 
   useEffect(() => {
-    try {
-      const userData = localStorage.getItem("user");
-      setUser(userData ? JSON.parse(userData) : {});
-    } catch (err) {
-      console.error("Error reading user from localStorage:", err);
-      setUser({});
-    }
     setIsHydrated(true);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    router.push("/");
+    // Token is cleared by server's logout endpoint or cookie expiration
+    // Just redirect to login
+    router.push("/auth/login");
   };
 
   return (
