@@ -12,10 +12,30 @@ dotenv.config();
 const app = express();
 
 // Middleware
+// app.use(cors({
+//   origin: "http://localhost:3000" || "https://vender-saas.onrender.com", // your frontend
+//   credentials: true
+// }));
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://vender-saas.vercel.app",
+  "https://vender-saas-git-main-unknown9.vercel.app",
+  "https://vender-saas-e257b2wif-unknown9.vercel.app"
+];
+
 app.use(cors({
-  origin: "http://localhost:3000" || "https://vender-saas.onrender.com", // your frontend
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
+
+
 app.use(express.json());
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser()); // ✅ Add cookie-parser
