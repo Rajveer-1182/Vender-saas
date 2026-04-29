@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import bookingRoutes from "./routes/booking.routes.js";
@@ -11,9 +12,13 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000", // your frontend
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(cookieParser()); // ✅ Add cookie-parser
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/vendor_saas")
