@@ -12,22 +12,6 @@ export default function DashboardPage() {
   const { bookings, analytics, loading: bookingsLoading } = useBookings();
   const { inventory, loading: inventoryLoading } = useInventory();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   const userData = localStorage.getItem('user');
-    
-  //   if (!token || !userData) {
-  //     router.push('auth/login');
-  //     return;
-  //   }
-    
-  //   try {
-  //     setUser(JSON.parse(userData));
-  //   } catch (e) {
-  //     router.push('auth/login');
-  //   }
-  // }, [router]);
-
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -49,15 +33,15 @@ export default function DashboardPage() {
   const stats = analytics || {};
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 h-screen w-full rounded-lg">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-8 shadow-lg">
-        <h1 className="text-4xl font-bold mb-2">Welcome, {user.businessName}! 👋</h1>
-        <p className="text-blue-100">Manage your wedding vendor business with ease</p>
+      <div className="bg-gradient-to-r flex flex-col gap-2  from-blue-600 to-purple-600 text-white p-6 shadow-lg">
+        <h1 className="text-5xl  font-semibold mb-2">Welcome, <span className='text-purple-600 font-semibold '>{user.businessName}! 👋</span> </h1>
+        <p className="text-blue-200 text-xl font-bold">Manage your wedding vendor business with ease</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-gray-500 text-sm font-medium">Total Bookings</div>
           <div className="text-3xl font-bold text-blue-600">{bookings?.length || 0}</div>
@@ -86,10 +70,10 @@ export default function DashboardPage() {
       {/* Recent Bookings */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Recent Bookings</h2>
+          <h2 className="text-3xl font-bold text-gray-800">Recent Bookings</h2>
           <button
             onClick={() => router.push('/bookings/create')}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg transition"
           >
             + New Booking
           </button>

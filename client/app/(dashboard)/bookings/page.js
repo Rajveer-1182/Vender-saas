@@ -12,23 +12,6 @@ export default function BookingsPage() {
   const [filter, setFilter] = useState('all');
   const { bookings, loading, completeBooking, cancelBooking,updatePayment } = useBookings();
 
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   const userData = localStorage.getItem('user');
-    
-  //   if (!token || !userData) {
-  //     router.push('/login');
-  //     return;
-  //   }
-  //   ` `
-  //   try {
-  //     setUser(JSON.parse(userData));
-  //   } catch (e) {
-  //     router.push('/login');
-  //   }
-  // }, [router]);
-
   useEffect(() => {
   const checkUser = async () => {
     try {
@@ -53,8 +36,32 @@ export default function BookingsPage() {
     return true;
   }) || [];
 
+
+  const handleViewDetails = (id) => {
+  router.push(`/bookings/${id}`);
+};
+
+const handleSendInvoice = async (id) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/receipt/${id}`);
+    const blob = await res.blob();
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "receipt.pdf";
+    a.click();
+  } catch (err) {
+    console.error("Invoice error:", err);
+  }
+};
+
+const handleComplete = (id) => {
+  completeBooking(id);
+};
+
   return (
-    <div className="space-y-4 sm:space-y-6 px-3 sm:px-4 md:px-6">
+    <div className="h-screen w-full flex flex-col gap-5 space-y-4 sm:space-y-6 px-3 sm:px-4 md:px-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -70,12 +77,12 @@ export default function BookingsPage() {
       </div>
 
       {/* Filter Buttons */}
-      <div className="flex gap-2 sm:gap-4 flex-wrap">
+      <div className="flex flex-wrap gap-2 sm:gap-4 h-[25px] p-4 bg-gray-50 rounded-lg ">
         {['all', 'pending', 'completed'].map(f => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition text-xs sm:text-base ${
+            className={`px-5 sm:px-4 py-2 rounded-lg font-medium transition text-xs w-[100px] sm:text-base ${
               filter === f
                 ? 'bg-blue-600 text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -96,7 +103,15 @@ export default function BookingsPage() {
         <div className="space-y-3 sm:space-y-4">
           {filteredBookings.map(booking => (
             <div key={booking._id} className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-              <BookingCard booking={booking} />
+              {/* <BookingCard booking={booking} /> */}
+
+                    <BookingCard
+  booking={booking}
+  onViewDetails={handleViewDetails}
+  onSendInvoice={handleSendInvoice}
+  onComplete={handleComplete}
+/>
+
               <div className="mt-4 flex gap-2 flex-wrap pt-4 border-t">
                 {booking.paymentStatus !== 'paid' && (
                   <button

@@ -10,28 +10,7 @@ const apiClient = axios.create({
   }
 });
 
-// ============ AUTH ENDPOINTS ============
-// export const authAPI = {
-//   register: async (data) => {
-//     const res = await apiClient.post("/auth/register", data);
-//     return res.data;
-//   },
 
-//   login: async (data) => {
-//     const res = await apiClient.post("/auth/login", data);
-//     return res.data;
-//   },
-
-//   getProfile: async () => {
-//     const res = await apiClient.get("/auth/profile");
-//     return res.data;
-//   },
-
-//   updateProfile: async (data) => {
-//     const res = await apiClient.put("/auth/update-profile", data);
-//     return res.data;
-//   }
-// };
 
 export const authAPI = {
   register: (data) => apiClient.post("/auth/register", data),

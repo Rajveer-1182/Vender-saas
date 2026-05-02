@@ -12,22 +12,6 @@ export default function InventoryPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { inventory, loading, deleteItem } = useInventory();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   const userData = localStorage.getItem('user');
-    
-  //   if (!token || !userData) {
-  //     router.push('/login');
-  //     return;
-  //   }
-    
-  //   try {
-  //     setUser(JSON.parse(userData));
-  //   } catch (e) {
-  //     router.push('/login');
-  //   }
-  // }, [router]);
-
 
 
 useEffect(() => {
@@ -55,7 +39,7 @@ useEffect(() => {
     : inventory?.filter(item => item.category === selectedCategory) || [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 h-screen w-full rounded-lg">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -78,7 +62,7 @@ useEffect(() => {
             onClick={() => setSelectedCategory(category)}
             className={`px-4 py-2 rounded-lg font-medium transition ${
               selectedCategory === category
-                ? 'bg-blue-600 text-white'
+                ? 'bg-blue-600 text-white w-[40px] sm:w-[100px]'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -109,7 +93,7 @@ useEffect(() => {
           <p className="text-gray-600 text-lg mb-4">No items in this category yet</p>
           <button
             onClick={() => router.push('/inventory/add')}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 h-[40px] w-[200px] rounded-lg transition"
           >
             Add Your First Item
           </button>

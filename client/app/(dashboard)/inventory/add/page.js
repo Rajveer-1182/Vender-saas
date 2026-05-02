@@ -49,7 +49,7 @@ export default function AddInventoryPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className=" mx-auto bg-gray-200 h-screen w-[100%]">
       <div className="bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">📦 Add New Item</h1>
         <p className="text-gray-600 mb-8">Add a new item to your inventory</p>
@@ -60,7 +60,7 @@ export default function AddInventoryPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Item Name */}
             <div>
